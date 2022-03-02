@@ -15,7 +15,10 @@ const AppContainer = styled.div`
 `;
 
 const HeaderContainer = styled.header`
-  padding: 2.5rem 0;
+  margin: 2.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 function Layout() {
