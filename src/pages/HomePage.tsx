@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import { useAuth } from "../state/state";
 
 import Checkbox from "../components/Checkbok";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface InputProps {
   error?: any;
@@ -14,6 +15,7 @@ export const FormContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   max-width: 640px;
   width: 90vw;
 `;
@@ -69,15 +71,21 @@ export const Button = styled.button<{ loading: boolean }>`
     outline: 2px solid #000;
   }
 `;
+
 interface IFormInput {
   email: string;
   password: string;
 }
 
 function HomePage() {
-  const { signin } = useAuth();
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [isChecked, setIsChecked] = React.useState(false);
+  const { user, signin } = useAuth();
+  let navigate = useNavigate();
+  let location = useLocation();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+
+  const [error, setError] = useState<Error | null>(null);
 
   const {
     register,
@@ -85,19 +93,33 @@ function HomePage() {
     formState: { errors },
   } = useForm<IFormInput>();
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
+  // @ts-ignore
+  let from = location.state?.from?.pathname || "/";
 
-  console.log("error: ", errors);
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    try {
+      setIsLoading(true);
+      signin(data.email, data.password, () => {
+        navigate(from, { replace: true });
+        setIsLoading(false);
+        navigate("/user");
+      });
+    } catch (error: any) {
+      setError(error);
+      setIsLoading(false);
+    }
+  };
 
   return (
     <FormContainer>
+      {error && <p>{error.message}</p>}
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Label>Логин</Label>
         <Input
           error={errors?.email?.message}
           type="text"
-          defaultValue="test"
-          {...register("email", { required: "Required" })}
+          defaultValue="steve.jobs@example.com"
+          {...register("email", { required: "Обязателное поле" })}
         />
         {errors.email?.type === "required" && (
           <Message>{errors.email?.message}</Message>
@@ -107,8 +129,8 @@ function HomePage() {
         <Input
           error={errors}
           type="password"
-          defaultValue="test"
-          {...register("password", { required: "Required" })}
+          defaultValue="password"
+          {...register("password", { required: "Обязателное поле" })}
         />
         {errors.password?.type === "required" && (
           <Message>{errors.password?.message}</Message>
