@@ -78,7 +78,7 @@ interface IFormInput {
 }
 
 function HomePage() {
-  const { user, signin } = useAuth();
+  const { signin } = useAuth();
   let navigate = useNavigate();
   let location = useLocation();
 
