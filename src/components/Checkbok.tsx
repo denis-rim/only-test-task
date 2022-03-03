@@ -1,79 +1,69 @@
 import React from "react";
 import styled from "styled-components";
 
+const Container = styled.label`
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-size: 1rem;
+`;
+
 const Input = styled.input`
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
   height: 0;
   width: 0;
-  opacity: 0;
-  z-index: -1;
 `;
 
-const Label = styled.label<{ disabled: boolean }>`
-  position: relative;
-  display: inline-block;
-  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
-  margin: 1rem 1.6rem;
-`;
-
-const Indicator = styled.div`
-  width: 1.2rem;
-  height: 1.2rem;
+const Checkmark = styled.span`
   position: absolute;
   top: 0;
-  left: -1.6rem;
+  left: 0;
+  height: 1.2rem;
+  width: 1.2rem;
+
   border: 2px solid #000;
   border-radius: 4px;
 
-  &::after {
-    content: "";
-    position: absolute;
-    display: none;
+  ${Input}:checked ~ & {
+    background-color: #4a67ff;
+    border: 2px solid #4a67ff;
+    border-radius: 4px;
   }
 
-  ${Input}:checked + &::after {
+  ${Input}:checked ~ .checkmark:after {
     display: block;
-    width: 100%;
-    height: 100%;
-    background: #4a67ff;
-  }
-
-  &:disabled {
-    cursor: not-allowed;
   }
 `;
 
 interface CheckboxProps {
-  id?: string;
-  label: string;
-  value: any;
-  name: string;
   disabled: boolean;
   checked: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function Checkbox({
-  value,
-  checked,
-  onChange,
-  name,
-  id,
-  label,
-  disabled,
-}: CheckboxProps) {
+function Checkbox({ checked, disabled, onChange }: CheckboxProps) {
   return (
-    <Label htmlFor={id} disabled={disabled}>
-      {label}
-      <Input
-        id={id}
-        type="checkbox"
-        name={name}
-        value={value}
-        disabled={disabled}
-        checked={checked}
-        onChange={onChange}
-      />
-      <Indicator />
-    </Label>
+    <div style={{ marginTop: "1rem" }}>
+      <Container>
+        Сохранить пароль
+        <Input
+          type="checkbox"
+          disabled={disabled}
+          checked={checked}
+          onChange={onChange}
+        />
+        <Checkmark />
+      </Container>
+    </div>
   );
 }
+
+export default Checkbox;

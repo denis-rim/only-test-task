@@ -138,18 +138,14 @@ function HomePage() {
           <Message>{errors.password?.message}</Message>
         )}
 
-        <div>
-          <Checkbox
-            label="Сохранить пароль"
-            name="savePassword"
-            checked={isChecked}
-            value={isChecked}
-            disabled={isLoading}
-            onChange={({ target }) => {
-              setIsChecked(!isChecked);
-            }}
-          />
-        </div>
+        <Checkbox
+          checked={isChecked}
+          disabled={isLoading}
+          onChange={({ target }) => {
+            setIsChecked(!isChecked);
+          }}
+        />
+
         <Button loading={isLoading} disabled={isLoading}>
           Войти
         </Button>
