@@ -78,7 +78,7 @@ export const Button = styled.button<{ loading: boolean }>`
   }
 `;
 
-interface IFormInput {
+interface FormInput {
   email: string;
   password: string;
 }
@@ -97,9 +97,9 @@ function HomePage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormInput>();
+  } = useForm<FormInput>();
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+  const onSubmit: SubmitHandler<FormInput> = (data) => {
     try {
       setIsLoading(true);
       signin(data.email, data.password, () => {

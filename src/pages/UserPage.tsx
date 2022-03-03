@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { useAuth } from "../state/state";
 import { useNavigate } from "react-router-dom";
+
+import { useAuth } from "../state/state";
 
 export const Container = styled.div`
   display: flex;
