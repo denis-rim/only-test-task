@@ -67,7 +67,7 @@ export const Button = styled.button<{ loading: boolean }>`
   background: ${(props) => (props.loading ? "#99A9FF" : "#4a67ff")};
   color: #fff;
   outline-offset: 0.15rem;
-  transition: all 0.3s ease-in-out;
+  transition: background 0.3s ease-in-out;
 
   &:hover {
     background: #3858fc;

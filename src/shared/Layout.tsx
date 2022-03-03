@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 
-import logo from "../ONLY.svg";
+import logo from "../assets/ONLY.svg";
 
 const AppContainer = styled.div`
   display: grid;
