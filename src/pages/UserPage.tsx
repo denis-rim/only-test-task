@@ -32,6 +32,11 @@ export const Button = styled.button`
   background: #f5f5f5;
   color: #000;
   outline-offset: 0.15rem;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background: #c2c2c2;
+  }
 
   &:focus {
     outline: 2px solid #000;

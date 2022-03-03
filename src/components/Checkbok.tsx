@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 
 const Input = styled.input`
   height: 0;
@@ -16,22 +16,13 @@ const Label = styled.label<{ disabled: boolean }>`
 `;
 
 const Indicator = styled.div`
-  width: 1.2em;
-  height: 1.2em;
-  background: #e6e6e6;
+  width: 1.2rem;
+  height: 1.2rem;
   position: absolute;
-  top: 0em;
-  left: -1.6em;
-  border: 1px solid #757575;
-  border-radius: 0.2em;
-
-  ${Input}:not(:disabled):checked & {
-    background: #d1d1d1;
-  }
-
-  ${Label}:hover & {
-    background: #ccc;
-  }
+  top: 0;
+  left: -1.6rem;
+  border: 2px solid #000;
+  border-radius: 4px;
 
   &::after {
     content: "";

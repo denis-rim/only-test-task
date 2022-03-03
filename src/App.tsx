@@ -1,37 +1,38 @@
-import React from "react";
-import {
-  BrowserRouter as Router,
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-} from "react-router-dom";
+import React, { useEffect } from "react";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 
-import { AuthProvider, useAuth } from "./state/state";
+import { useAuth } from "./state/state";
 
 import Layout from "./shared/Layout";
 import HomePage from "./pages/HomePage";
 import UserPage from "./pages/UserPage";
 
 function App() {
+  const { user } = useAuth();
+
+  const navigate = useNavigate();
+
+  // If the user is not logged in, redirect to the login page
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, [user]);
+
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<HomePage />} />
-            <Route
-              path="/user"
-              element={
-                <RequireAuth>
-                  <UserPage />
-                </RequireAuth>
-              }
-            />
-          </Route>
-        </Routes>
-      </Router>
-    </AuthProvider>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route path="/login" element={<HomePage />} />
+        <Route
+          path="/profile"
+          element={
+            <RequireAuth>
+              <UserPage />
+            </RequireAuth>
+          }
+        />
+      </Route>
+    </Routes>
   );
 }
 

@@ -5,7 +5,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useAuth } from "../state/state";
 
 import Checkbox from "../components/Checkbok";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import ErrorMessage from "../components/ErrorMessage";
 
 interface InputProps {
   error?: any;
@@ -66,6 +67,11 @@ export const Button = styled.button<{ loading: boolean }>`
   background: ${(props) => (props.loading ? "#99A9FF" : "#4a67ff")};
   color: #fff;
   outline-offset: 0.15rem;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background: #3858fc;
+  }
 
   &:focus {
     outline: 2px solid #000;
@@ -79,8 +85,8 @@ interface IFormInput {
 
 function HomePage() {
   const { signin } = useAuth();
-  let navigate = useNavigate();
-  let location = useLocation();
+
+  const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
@@ -93,16 +99,12 @@ function HomePage() {
     formState: { errors },
   } = useForm<IFormInput>();
 
-  // @ts-ignore
-  let from = location.state?.from?.pathname || "/";
-
-  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+  const onSubmit: SubmitHandler<IFormInput> = (data) => {
     try {
       setIsLoading(true);
       signin(data.email, data.password, () => {
-        navigate(from, { replace: true });
         setIsLoading(false);
-        navigate("/user");
+        navigate("/profile");
       });
     } catch (error: any) {
       setError(error);
@@ -112,8 +114,8 @@ function HomePage() {
 
   return (
     <FormContainer>
-      {error && <p>{error.message}</p>}
       <Form onSubmit={handleSubmit(onSubmit)}>
+        {error && <ErrorMessage error={error} />}
         <Label>Логин</Label>
         <Input
           error={errors?.email?.message}
@@ -127,7 +129,7 @@ function HomePage() {
 
         <Label>Пароль</Label>
         <Input
-          error={errors}
+          error={errors.password?.message}
           type="password"
           defaultValue="password"
           {...register("password", { required: "Обязателное поле" })}

@@ -12,14 +12,20 @@ interface AuthContextType {
   signout: (callback: VoidFunction) => void;
 }
 
-let AuthContext = createContext<AuthContextType>(null!);
+const AuthContext = createContext<AuthContextType>(null!);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<string | null>(null);
 
+  // Login function
   const signin = (login: string, password: string, callback: VoidFunction) => {
-    if (login !== "steve.jobs@example.com" || password !== "password") {
-      throw new Error("Invalid email or password");
+    if (login !== "steve.jobs@example.com") {
+      // Bad practice expose users email, but for the sake of simplicity we'll do it like this
+      throw new Error(`Пользователя ${login} не существует`);
+    }
+
+    if (password !== "password") {
+      throw new Error("Неверный пароль");
     }
 
     return fakeAuthProvider.signin(() => {
@@ -28,6 +34,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  // Logout function
   const signout = (callback: VoidFunction) => {
     return fakeAuthProvider.signout(() => {
       setUser(null);
