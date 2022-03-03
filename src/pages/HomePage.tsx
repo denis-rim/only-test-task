@@ -70,7 +70,7 @@ export const Button = styled.button<{ loading: boolean }>`
   transition: background 0.3s ease-in-out;
 
   &:hover {
-    background: #3858fc;
+    background: ${(props) => (props.loading ? "#99A9FF" : "#3858fc")};
   }
 
   &:focus {
